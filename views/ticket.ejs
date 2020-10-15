@@ -17,13 +17,13 @@
             <form >
                 <div class="form-row">
                     <div class="col-6 col-sm-3 mr-2">
-                            <input name= "departure" type="text" class="form-control" placeholder="From Lille, Paris...">
+                            <input name= <%=departure %>  type="text" class="form-control" placeholder="From Lille, Paris...">
                     </div>
                     <div class="col-6 col-sm-3 mr-2">
-                        <input name= "arrival" type="text" class="form-control" placeholder="To Lyon, Montpellier...">
+                        <input name= <%= arrival %>  type="text" class="form-control" placeholder="To Lyon, Montpellier...">
                     </div>
                     <div class="col-6 col-sm-3 mr-2">
-                        <input name= "date" type="date" class="form-control" placeholder="To Lyon, Montpellier...">
+                        <input name= <%= date %>  type="date" class="form-control">
                     </div>
                     <div class="input-group-append ml-2">
                         <button  type="submit" class="btn btn-warning" id="button-addon2">Add</button>
