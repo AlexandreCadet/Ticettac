@@ -14,13 +14,7 @@ const mongoose = require('mongoose');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-<<<<<<< HEAD
   res.render('login', { title: 'Express' });
-=======
-
-
-  res.render('login');
->>>>>>> 28829dd1377b458182aca407479015b86a851fe7
 
 
 });
