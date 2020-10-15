@@ -35,7 +35,7 @@ body {
   display: flex;
   align-content: center;
   justify-content: center;
-  width: 100vw;
+  width: 100%;
   height: 88vh;
   
   color: white;
@@ -43,4 +43,24 @@ body {
 .copyright{
   text-align: center;
   
+}
+#oneWayForm{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  width: 100%;
+  height: 120px;
+  
+  padding-left: 25%;
+  padding-bottom: 12px;
+  color: white;
+}
+.img{
+  width: 16vw;
+  height: 29vh;
+  margin-top: 40px;
+}
+.blockImg{
+  text-align: center;
+  margin-bottom: 250px;
 }
