@@ -14,13 +14,7 @@ const mongoose = require('mongoose');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-<<<<<<< HEAD
   res.render('login', { title: 'Express' });
-=======
-
-
-  res.render('login');
->>>>>>> 28829dd1377b458182aca407479015b86a851fe7
 
 
 });
@@ -38,9 +32,9 @@ router.post('/sign-up', async function (req, res, next){
     journey : []
   });
 
-  var newUser = await newUser.save(); // sauvegarde
- res.status(200).send(req.body.email);
-  //res.redirect('/')
+  var newUser = await newUser.save();
+ 
+  res.redirect('/');
 });
 
 
@@ -57,10 +51,10 @@ router.post('/sign-in', async function (req, res, next){
  if(req.body.email == userEmail && req.body.password == userPassword ){
 
 
-  res.render("home", user)
+  res.render("home", {user})
  } else {
 
-  res.redirect('login')
+  res.redirect('/')
  }
 
 });
