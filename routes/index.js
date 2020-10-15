@@ -14,9 +14,89 @@ const mongoose = require('mongoose');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+<<<<<<< HEAD
   res.render('login', { title: 'Express' });
+=======
+
+
+  res.render('login');
+>>>>>>> 28829dd1377b458182aca407479015b86a851fe7
 
 
 });
 
 module.exports = router;
+
+router.post('/sign-up', async function (req, res, next){
+
+  var newUser = new userModel({
+
+    name: req.body.name,
+    firstName : req.body.firstName,
+    email : req.body.email,
+    password : req.body.password,
+    journey : []
+  });
+
+  var newUser = await newUser.save(); // sauvegarde
+ res.status(200).send(req.body.email);
+  //res.redirect('/')
+});
+
+
+router.post('/sign-in', async function (req, res, next){
+
+ var user = await userModel.find(); // met tous les users dans la variable user
+
+ for(i=0;i<user.length;i++){
+  var userEmail = user[i].email;
+  var userPassword = user[i].password;
+  
+ }
+
+ if(req.body.email == userEmail && req.body.password == userPassword ){
+
+
+  res.render("home", user)
+ } else {
+
+  res.redirect('login')
+ }
+
+});
+
+router.get('/mylasttrips', async function(req, res, next) {
+
+  var userId = await userModel.findById();
+
+
+  res.render('mylasttrips', userId);
+
+});
+
+router.post('/search', async function(req, res, next) {
+
+var journey = await journeyModel.find();
+
+
+if(journey.departure == req.body.departure && journey.arrival == req.body.arrival && journey.date == req.body.arrival){
+  var myDeparture = req.body.departure
+  var myArrival = req.body.arrival
+  var myDate = req.body.date
+
+  console.log("matched !");
+  res.render("tickets",{ myDeparture, myArrival, myDate} )
+
+} else {
+  res.redirect("/error")
+  console.log("not matched");
+}
+
+console.log(myJourney);
+
+});
+
+
+
+
+
