@@ -9,6 +9,6 @@ var userSchema = mongoose.Schema({
     
   });
   
-  var userModel = mongoose.model('journey', userSchema);
+  var userModel = mongoose.model('users', userSchema);
 
   module.exports = userModel
