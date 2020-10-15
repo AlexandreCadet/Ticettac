@@ -14,20 +14,20 @@
         <h2 id="oneWayForm">One-way ticket : </h2>
         
         <div class="row justify-content-center">
-            <form >
+            <form action="/search" method="POST">
                 <div class="form-row">
                     <div class="col-6 col-sm-3 mr-2">
-                            <input name= <%=departure %>  type="text" class="form-control" placeholder="From Lille, Paris...">
+                            <input type="text" class="form-control" placeholder="From Lille, Paris...">
                     </div>
                     <div class="col-6 col-sm-3 mr-2">
-                        <input name= <%= arrival %>  type="text" class="form-control" placeholder="To Lyon, Montpellier...">
+                        <input type="text" class="form-control" placeholder="To Lyon, Montpellier...">
                     </div>
-                    <div class="col-6 col-sm-3 mr-2">
-                        <input name= <%= date %>  type="date" class="form-control">
+                    <div class="col-6 col-sm-3 mr-2 ml-2">
+                        <input  type="date" class="form-control">
                     </div>
-                    <div class="input-group-append ml-2">
-                        <button  type="submit" class="btn btn-warning" id="button-addon2">Add</button>
-                    </div>
+                    
+                    <button  type="submit" class="btn btn-danger" id="button-addon2">Go</button>
+                
                 </div>
                 
             </form>  
