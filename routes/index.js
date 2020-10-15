@@ -51,7 +51,7 @@ router.post('/sign-in', async function (req, res, next){
  if(req.body.email == userEmail && req.body.password == userPassword ){
 
 
-  res.render("home", {user})
+  res.render("ticket", {user})
  } else {
 
   res.redirect('/')
