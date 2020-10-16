@@ -81,3 +81,14 @@ body {
   height: 88vh;
   
 }
+.table{
+  background-color: white;
+
+}
+
+.borderless td, .borderless th{
+  border: white 1px solid
+}
+#confirm-button{
+margin-left: 55vw;
+}
