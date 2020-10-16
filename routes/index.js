@@ -50,7 +50,7 @@ router.post('/sign-in', async function (req, res, next){
     password: req.body.password,
   });
 
-console.log(user);
+//console.log(user);
 
   if (user != null) { // si user existe bien, execute le code si dessous
     req.session.user = { name: user.name, id: user._id }; // stocke le nom et l'id du user dans la session
@@ -72,22 +72,22 @@ router.get('/mylasttrips', async function(req, res, next) {
 
 });
 
-// router.post('/search', async function(req, res, next) {
+ router.post('/search', async function(req, res, next) {
 
-// var journey = await journeyModel.find({departure : req.body.departure, arrival : req.body.arrival, date : req.body.date});
+ var journey = await journeyModel.find({departure : req.body.departure, arrival : req.body.arrival, date : req.body.date});
 
-// if(journey !== null){
+ if(journey !== null){
 
 
-//   console.log("matched !");
-//   res.render("ticketcard",{ journey : req.session.user} )
+   console.log("matched !");
+   res.render("ticketcard",{ journey : req.session.user} )
 
-// } else {
-//   res.redirect("error")
-//   console.log("not matched");
-// }
+ } else {
+   res.redirect("error")
+   console.log("not matched");
+ }
 
-// });
+ });
 
 
 
