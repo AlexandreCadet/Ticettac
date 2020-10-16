@@ -51,7 +51,6 @@ router.post('/sign-in', async function (req, res, next){
     password: req.body.password,
   });
 
-//console.log(user);
 
   if (req.session.user != null) { // si user existe bien, execute le code si dessous
     req.session.user = { name: req.session.user.name, id: req.session.user._id }; // stocke le nom et l'id du user dans la session
@@ -80,12 +79,10 @@ router.get('/mylasttrips', async function(req, res, next) {
 
  if(req.session.user !==null){
 
-  console.log("matched !");
-   
+  console.log("matched !");   
 
    res.render("ticketcard",{ user : req.session.user});
 
-   console.log(req.session.user.date);
 
  } else {
    res.render("error")
@@ -94,18 +91,16 @@ router.get('/mylasttrips', async function(req, res, next) {
 
  });
 
- router.get("/add-journey", function (req, res, next){
+ router.get("/add-journey", function (req, res, next){ 
 
-user = req.session.user; 
-
-userModel.findOne(user._id)
+userModel.findOne(req.session.user._id)
         .populate("journeys")
         .exec
 
 // trouve le user par son id
 
 
-  res.render ("mytickets")
+  res.render ("mytickets",{user : req.session.user})
  });
 
 
