@@ -121,8 +121,8 @@ await userModel.updateOne({_id : req.session.user.id},{journey : oldJourney}) //
 
 console.log(user);
 
-  res.render ("mytickets")
- });
+  res.render ("mytickets", {journey} )
+});
 
 
 //  var order = await ordersModel.findById(req.query.id)
