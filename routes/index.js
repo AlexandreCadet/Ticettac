@@ -21,6 +21,10 @@ router.get('/', function(req, res, next) {
 
 module.exports = router;
 
+/* GET SIGN-UP */
+
+
+
 router.post('/sign-up', async function (req, res, next){
 
   var newUser = new userModel({
@@ -40,22 +44,22 @@ router.post('/sign-up', async function (req, res, next){
 
 router.post('/sign-in', async function (req, res, next){
 
- var user = await userModel.find(); // met tous les users dans la variable user
 
- for(i=0;i<user.length;i++){
-  var userEmail = user[i].email;
-  var userPassword = user[i].password;
-  
- }
+  var user = await userModel.findOne({
+    email: req.body.email,
+    password: req.body.password,
+  });
 
- if(req.body.email == userEmail && req.body.password == userPassword ){
+console.log(user);
 
-
-  res.render("home", {user})
- } else {
-
-  res.redirect('/')
- }
+  if (user != null) { // si user existe bien, execute le code si dessous
+    req.session.user = { name: user.name, id: user._id }; // stocke le nom et l'id du user dans la session
+    console.log("match");
+    res.render("ticket")
+  } else { // si user n'existe pas, execute le code si dessous
+    console.log("not matched");
+    res.redirect('/')
+  }
 
 });
 
@@ -68,27 +72,22 @@ router.get('/mylasttrips', async function(req, res, next) {
 
 });
 
-router.post('/search', async function(req, res, next) {
+// router.post('/search', async function(req, res, next) {
 
-var journey = await journeyModel.find();
+// var journey = await journeyModel.find({departure : req.body.departure, arrival : req.body.arrival, date : req.body.date});
+
+// if(journey !== null){
 
 
-if(journey.departure == req.body.departure && journey.arrival == req.body.arrival && journey.date == req.body.arrival){
-  var myDeparture = req.body.departure
-  var myArrival = req.body.arrival
-  var myDate = req.body.date
+//   console.log("matched !");
+//   res.render("ticketcard",{ journey : req.session.user} )
 
-  console.log("matched !");
-  res.render("tickets",{ myDeparture, myArrival, myDate} )
+// } else {
+//   res.redirect("error")
+//   console.log("not matched");
+// }
 
-} else {
-  res.redirect("/error")
-  console.log("not matched");
-}
-
-console.log(myJourney);
-
-});
+// });
 
 
 
