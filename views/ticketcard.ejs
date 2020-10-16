@@ -15,8 +15,8 @@
        
            
             <div class="col col-12 col-sm-9" >
-                
-                    <h3 class="oneWayForm">Ticket available on <%= user.date %>: </h3>
+                    
+                    <h3 class="oneWayForm">Ticket available on <%= user[0].date %>: </h3>
 
                     <div class="card">
                         
@@ -31,7 +31,7 @@
                                     <%= user[i].departure %> / <%= user[i].arrival %>
                                     <div>departure at: <%= user[i].departureTime %> pm</div> 
                                     <div> <%= user[i].price %> €</div>
-                                    <a href="/add-journey"class="btn btn-danger"> Ok</a>
+                                    <a href="/add-journey?departure=<%= user[i].departure %>&arrival=<%= user[i].arrival %>&<%= user[i].departureTime %>&price<%= user[i].price %>"class="btn btn-danger"> Ok</a>
                             </li> 
                         <%
                             }
