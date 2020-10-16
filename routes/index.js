@@ -74,32 +74,47 @@ router.get('/mylasttrips', async function(req, res, next) {
 
  router.post('/search', async function(req, res, next) {
 
- var journey = await journeyModel.find({departure : req.body.departure, arrival : req.body.arrival, date : req.body.date});
+ req.session.user = await journeyModel.find({departure : req.body.departure, arrival : req.body.arrival, date : req.body.date});
 
- if(journey !== null){
+if(req.session.journey == undefined){
+  req.session.journey = [];
+};
 
+if(journey.length == 0){
+    console.log("not matched"); 
+    res.redirect("/error");
+  } else {
+    console.log("matched !");
 
-   console.log("matched !");
-   console.log(journey.length);
-   res.render("ticketcard",{ journey : req.session.user} )
+   
+   res.render("ticketcard",{ user : req.session.user})
+}
 
- } else {
-   res.render("error")
-   console.log("not matched");
- }
 
  });
 
+
  router.get("/add-journey", function (req, res, next){
 
-journey = req.session.user;
+user = req.session.user; 
 
+userModel.findOne(user._id)
+        .populate("journeys")
+        .exec
+
+// trouve le user par son id
 
 
   res.render ("mytickets")
  });
 
 
+
+ //--------------ERROR-------------//
+
+router.get("/error", function (req, res, next){
+  res.render ("error")
+})
 
 
 
