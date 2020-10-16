@@ -29,14 +29,20 @@
                         <th scope="col">Departure time</th>
                         <th scope="col">Price</th>
                       </tr>
-                      
+                      <% 
+                      for (let i = 0; i < journey.length; i++) {
+                      %>
                       <tr  class="list borderless">
-                        <th scope="row">1</th>
-                        <td>Lille / Bordeaux </td>
-                        <td>07/11/2018</td>
-                        <td>19:00</td>
-                        <td>938 €</td>
+                        <th scope="row"><%= (i + 1) %></th>
+                        <td><%=journey[i].departure%> / <%=journey[i].arrival%> </td>
+                        <td><%=journey[i].date%></td>
+                        <td><%=journey[i].departureTime%></td>
+                        <td><%=journey[i].price%> €</td>
                       </tr>
+                      <% 
+                      }
+                      %> 
+                      
                       
                       <tr class="table-danger">
                         <th scope="row">Total</th>
