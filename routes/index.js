@@ -80,14 +80,25 @@ router.get('/mylasttrips', async function(req, res, next) {
 
 
    console.log("matched !");
+   console.log(journey.length);
    res.render("ticketcard",{ journey : req.session.user} )
 
  } else {
-   res.redirect("error")
+   res.render("error")
    console.log("not matched");
  }
 
  });
+
+ router.get("/add-journey", function (req, res, next){
+
+journey = req.session.user;
+
+
+
+  res.render ("mytickets")
+ });
+
 
 
 
