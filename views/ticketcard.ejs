@@ -15,23 +15,27 @@
        
            
             <div class="col col-12 col-sm-9" >
-                <h3 class="oneWayForm">Ticket available on : <%= journey.date %>  </h3>
-                    
+                
+                    <h3 class="oneWayForm">Ticket available on <%= user.date %>: </h3>
 
                     <div class="card">
+                        
                         <% 
-                            for(let i= 0; i<journey.length; i++){
-                                
-                        %> 
+                            
+                            
+                            for (let i = 0; i < user.length; i++) {
+                            
+                        %>  
+                        
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <%= journey[i].departure %> / <%= journey[i].arrival %>
-                                    <div>departure at: <%= journey[i].departureTime %></div> 
-                                    <div> <%= journey[i].price %> €</div>
+                                    <%= user[i].departure %> / <%= user[i].arrival %>
+                                    <div>departure at: <%= user[i].departureTime %> pm</div> 
+                                    <div> <%= user[i].price %> €</div>
                                     <a href="/add-journey"class="btn btn-danger"> Ok</a>
-                            </li>  
+                            </li> 
                         <%
-                        }
-                        %>                    
+                            }
+                        %>                     
                                  
                     </div>
             </div>  
