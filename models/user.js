@@ -5,7 +5,7 @@ var userSchema = mongoose.Schema({
     firstName : String,
     email : String,
     password : String,
-    journey : [{type: mongoose.Schema.Types.ObjectId, ref:"journeys"}]
+    journey : [{type: mongoose.Schema.Types.ObjectId, ref:"journeys"}] // références à la collection "journeys"
     
   });
   

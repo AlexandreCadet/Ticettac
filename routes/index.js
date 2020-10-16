@@ -74,14 +74,14 @@ router.get('/mylasttrips', async function(req, res, next) {
 
  router.post('/search', async function(req, res, next) {
 
- req.session.user = await journeyModel.find({departure : req.body.departure, arrival : req.body.arrival, date : req.body.date});
+ var journey = await journeyModel.find({departure : req.body.departure, arrival : req.body.arrival, date : req.body.date});
 
 
- if(req.session.user !==null){
+ if(journey !== null){
 
   console.log("matched !");   
 
-   res.render("ticketcard",{ user : req.session.user});
+   res.render("ticketcard",{ journey});
 
 
  } else {
@@ -91,17 +91,50 @@ router.get('/mylasttrips', async function(req, res, next) {
 
  });
 
- router.get("/add-journey", function (req, res, next){ 
-
-userModel.findOne(req.session.user._id)
-        .populate("journeys")
-        .exec
-
-// trouve le user par son id
+ router.get("/add-journey", async function (req, res, next){ 
 
 
-  res.render ("mytickets",{user : req.session.user})
+// let idjourney; // récupère l'id du front et stocke dans variable
+
+console.log("matchedeeeee !")
+console.log(req.query.id);
+
+console.log(req.session.user);
+
+var user = await userModel.findById(req.session.user.id)
+         .populate("journey") // permet de 
+         .exec()
+
+         console.log(user);
+
+
+
+
+
+
+var journey = await journeyModel.findById(req.query.id)
+
+var oldJourney = user.journey
+oldJourney.push(journey)
+
+await userModel.updateOne({_id : req.session.user.id},{journey : oldJourney}) // 1er objet est le filtre, le second remplace l'ancien journey par le nouveau
+
+console.log(user);
+
+  res.render ("mytickets")
  });
+
+
+//  var order = await ordersModel.findById(req.query.id)
+//  .populate('articles')
+//  .exec()
+
+// res.render('order', { order});
+// });
+
+
+
+
 
 
 
