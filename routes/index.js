@@ -14,9 +14,10 @@ const mongoose = require('mongoose');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  //if (req.session.user===undefined){
+   // req.session.user= [];
+  //}
   res.render('login', { title: 'Express' });
-
-
 });
 
 module.exports = router;
@@ -45,17 +46,17 @@ router.post('/sign-up', async function (req, res, next){
 router.post('/sign-in', async function (req, res, next){
 
 
-  var user = await userModel.findOne({
+  req.session.user= await userModel.findOne({
     email: req.body.email,
     password: req.body.password,
   });
 
 //console.log(user);
 
-  if (user != null) { // si user existe bien, execute le code si dessous
-    req.session.user = { name: user.name, id: user._id }; // stocke le nom et l'id du user dans la session
+  if (req.session.user != null) { // si user existe bien, execute le code si dessous
+    req.session.user = { name: req.session.user.name, id: req.session.user._id }; // stocke le nom et l'id du user dans la session
     console.log("match");
-    res.render("ticket")
+    res.render("ticket",{user:req.session.user})
   } else { // si user n'existe pas, execute le code si dessous
     console.log("not matched");
     res.redirect('/')
@@ -76,30 +77,22 @@ router.get('/mylasttrips', async function(req, res, next) {
 
  req.session.user = await journeyModel.find({departure : req.body.departure, arrival : req.body.arrival, date : req.body.date});
 
-<<<<<<< HEAD
-=======
-if(req.session.journey == undefined){
-  req.session.journey = [];
-};
->>>>>>> backend
 
-if(journey.length == 0){
-    console.log("not matched"); 
-    res.redirect("/error");
-  } else {
-    console.log("matched !");
+ if(req.session.user !==null){
 
+  console.log("matched !");
    
-<<<<<<< HEAD
-   res.render("ticketcard",{ journey : req.session.user})
-=======
-   res.render("ticketcard",{ user : req.session.user})
->>>>>>> backend
-}
 
+   res.render("ticketcard",{ user : req.session.user});
+
+   console.log(req.session.user.date);
+
+ } else {
+   res.render("error")
+   console.log("not matched");
+ }
 
  });
-
 
  router.get("/add-journey", function (req, res, next){
 
@@ -111,14 +104,11 @@ userModel.findOne(user._id)
 
 // trouve le user par son id
 
+
   res.render ("mytickets")
  });
 
- //--------------ERROR-------------//
 
-router.get("/error", function (req, res, next){
-  res.render ("error")
-})
 
  //--------------ERROR-------------//
 
