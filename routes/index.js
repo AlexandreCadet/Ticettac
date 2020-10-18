@@ -14,9 +14,7 @@ const mongoose = require('mongoose');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  if (req.session.basket===undefined){
-    req.session.basket= [];
-  }
+  
   res.render('login', { title: 'Express', basket : req.session.basket });
 });
 
@@ -72,6 +70,7 @@ router.post('/sign-in', async function (req, res, next){
 
 
 router.post('/search', async function(req, res, next) {
+
 req.session.basket = await journeyModel.find({departure : req.body.departure, arrival : req.body.arrival, date : req.body.date});
 
 
@@ -90,7 +89,9 @@ req.session.basket = await journeyModel.find({departure : req.body.departure, ar
  });
 
  router.get("/basket", async function (req, res, next){ 
-
+  if (req.session.basket===undefined){
+    req.session.basket= [];
+  }
   let alreadyExist = false;
   
   console.log(req.session.basket.length);
