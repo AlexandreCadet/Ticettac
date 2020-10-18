@@ -142,29 +142,17 @@ router.get("/error", function (req, res, next){
 
 router.get('/confirm', async function(req, res, next) {
 
-  console.log("basket");
-  console.log(req.session.basket);
-  console.log(req.session.basket.price); 
 
   var user = await userModel.findById(req.session.user.id)
           .populate("journey") 
           .exec()
   
-  console.log("console log de user");
-  console.log(req.session.user.id);
-  console.log(Object.keys(req.session.basket))
 
-
-
-  console.log(typeof req.session.basket);
 
   for(i=0;i<req.session.basket.length;i++){
 
     var journey = await journeyModel.find({_id : req.session.basket[i].id});
 
-  console.log("console log de journey");
-  console.log(journey); 
-  
   var oldJourney = user.journey
    oldJourney.push(journey)
 
