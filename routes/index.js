@@ -71,14 +71,14 @@ router.post('/sign-in', async function (req, res, next){
 
 router.post('/search', async function(req, res, next) {
 
-req.session.basket = await journeyModel.find({departure : req.body.departure, arrival : req.body.arrival, date : req.body.date});
+var basket = await journeyModel.find({departure : req.body.departure, arrival : req.body.arrival, date : req.body.date});
 
 
- if(req.session.basket !== null){
+ if(basket !== null){
 
   console.log("matched !");   
 
-   res.render("ticketcard",{ basket : req.session.basket});
+   res.render("ticketcard",{ basket});
 
 
  } else {
@@ -93,25 +93,27 @@ req.session.basket = await journeyModel.find({departure : req.body.departure, ar
     req.session.basket= [];
   }
   let alreadyExist = false;
-  
-  console.log(req.session.basket.length);
+
 
   for (let i=0;i<req.session.basket.length;i++){
-    if(req.query.id === req.session.basket[i]._id){
-      req.session.basket[i].quantity += 1;
-      alreadyExist == true
-    }
-    if(alreadyExist ==false){
+      if(req.query.id === journey._id){
+        alreadyExist = true;
+        
+      }
+  }
+  if(alreadyExist==false){
       req.session.basket.push({
-        arrival : req.query.arrival,
-        departure : req.query.departure,
-        departureTime : req.query.departureTime,
-        price : req.query.price,
-        id : req.query.id,
-        quantity : 1
-
+        departure : journey.departure,
+        arrival : journey.arrival,
+        departureTime : journey.departureTime,
+        price : journey.price,
+        date : journey.date,
+        id : journey._id,
+    
       })
-    }  }
+
+
+} 
 
     
 // var journey = await journeyModel.findById(req.query.id)
@@ -163,12 +165,30 @@ router.get("/error", function (req, res, next){
 
 
 
+router.get('/confirm', async function(req, res, next) {
 
-router.get('/mylasttrips', async function(req, res, next) {
+  var user = await userModel.findById(req.session.user.id)
+          .populate("journey") 
+          .exec()
+  
+  console.log("console log de user");
+  console.log(user);
+  console.log(req.session.basket._id);
+  var journey = await journeyModel.findById(req.session.basket._id)
+  
+  console.log("console log de journey");
+  console.log(journey);
+  
+  var oldJourney = user.journey
+   oldJourney.push(journey)
+  
+  await userModel.updateOne({_id : req.session.user.id},{journey : oldJourney}) // 1er objet est le filtre, le second remplace l'ancien journey par le nouveau
+  
+  
 
-  var userId = await userModel.findById();
 
-
-  res.render('mylasttrips', userId);
+  res.render('confirmation');
 
 });
+
+
