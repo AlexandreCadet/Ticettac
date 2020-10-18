@@ -14,7 +14,9 @@ const mongoose = require('mongoose');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  
+  if (req.session.basket===undefined){
+    req.session.basket= [];
+  }
   res.render('login', { title: 'Express', basket : req.session.basket });
 });
 
@@ -71,14 +73,14 @@ router.post('/sign-in', async function (req, res, next){
 
 router.post('/search', async function(req, res, next) {
 
-var basket = await journeyModel.find({departure : req.body.departure, arrival : req.body.arrival, date : req.body.date});
+var basketCard = await journeyModel.find({departure : req.body.departure, arrival : req.body.arrival, date : req.body.date});
 
 
- if(basket !== null){
+ if(basketCard !== null){
 
   console.log("matched !");   
 
-   res.render("ticketcard",{ basket});
+   res.render("ticketcard",{ basketCard});
 
 
  } else {
@@ -89,14 +91,13 @@ var basket = await journeyModel.find({departure : req.body.departure, arrival : 
  });
 
  router.get("/basket", async function (req, res, next){ 
-  if (req.session.basket===undefined){
-    req.session.basket= [];
-  }
+  var journey= await journeyModel.findById(req.query.id);
+  
   let alreadyExist = false;
 
 
-  for (let i=0;i<req.session.basket.length;i++){
-      if(req.query.id === journey._id){
+  for (let i= 0;i<req.session.basket.length;i++){
+      if(req.query.id === req.session.basket[i].id){
         alreadyExist = true;
         
       }
@@ -115,36 +116,9 @@ var basket = await journeyModel.find({departure : req.body.departure, arrival : 
 
 } 
 
-    
-// var journey = await journeyModel.findById(req.query.id)
-// console.log(journey);
-// req.session.basket.push(journey)
-
-//   var user = await userModel.findById(req.session.user.id)
-//          .populate("journey") // permet de 
-//          .exec()
-
-//          console.log(user);
-
-
-
-
-
-
-// var journey = await journeyModel.findById(req.query.id)
-
-
-// var oldJourney = user.journey
-// oldJourney.push(journey)
-
-// await userModel.updateOne({_id : req.session.user.id},{journey : oldJourney}) // 1er objet est le filtre, le second remplace l'ancien journey par le nouveau
-
 
 
   
-
-
-
 
   res.render ("mytickets", {basket : req.session.basket} )
 });
@@ -167,20 +141,20 @@ router.get("/error", function (req, res, next){
 
 router.get('/confirm', async function(req, res, next) {
 
-  var user = await userModel.findById(req.session.user.id)
-          .populate("journey") 
-          .exec()
+  //var user = await userModel.findById(req.session.user.id)
+    //      .populate("journey") 
+      //    .exec()
   
-  console.log("console log de user");
-  console.log(user);
-  console.log(req.session.basket._id);
-  var journey = await journeyModel.findById(req.session.basket._id)
+  //console.log("console log de user");
+  //console.log(user);
+ // console.log(req.session.basket._id);
+//  var journey = await journeyModel.findById(req.session.basket._id)
   
-  console.log("console log de journey");
-  console.log(journey);
+ // console.log("console log de journey");
+ // console.log(journey);
   
-  var oldJourney = user.journey
-   oldJourney.push(journey)
+  //var oldJourney = user.journey
+ //  oldJourney.push(journey)
   
   await userModel.updateOne({_id : req.session.user.id},{journey : oldJourney}) // 1er objet est le filtre, le second remplace l'ancien journey par le nouveau
   

@@ -16,22 +16,22 @@
            
             <div class="col col-12 col-sm-9" >
                     
-                    <h3 class="oneWayForm">Ticket available on <%= basket[0].date %>: </h3>
+                    <h3 class="oneWayForm">Ticket available on <%= basketCard[0].date %>: </h3>
 
                     <div class="card">
                         
                         <% 
                             
                             
-                            for (let i = 0; i < basket.length; i++) {
+                            for (let i = 0; i < basketCard.length; i++) {
                             
                         %>  
                         
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <%= basket[i].departure %> / <%= basket[i].arrival %>
-                                    <div>departure at: <%= basket[i].departureTime %> pm</div> 
-                                    <div> <%= basket[i].price %> €</div>
-                                    <a href="/basket?id=<%=basket[i]._id%>"class="btn btn-danger"> Ok</a>
+                                    <%= basketCard[i].departure %> / <%= basketCard[i].arrival %>
+                                    <div>departure at: <%= basketCard[i].departureTime %> pm</div> 
+                                    <div> <%= basketCard[i].price %> €</div>
+                                    <a href="/basket?id=<%=basketCard[i]._id%>"class="btn btn-danger"> Ok</a>
                             </li> 
                         <%
                             }
