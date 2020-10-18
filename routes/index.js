@@ -61,8 +61,10 @@ router.post('/sign-in', async function (req, res, next){
 
   if (req.session.user != null) { // si user existe bien, execute le code si dessous
     req.session.user = { name: req.session.user.name, id: req.session.user._id }; // stocke le nom et l'id du user dans la session
-    console.log("match");
-    res.render("ticket",{user:req.session.user})
+    console.log(req.session.user);
+    console.log("match user");
+
+    res.render("ticket",{user : req.session.user})
   } else { // si user n'existe pas, execute le code si dessous
     console.log("not matched");
     res.redirect('/')
@@ -118,36 +120,6 @@ var basket = await journeyModel.find({departure : req.body.departure, arrival : 
 
 } 
 
-    
-// var journey = await journeyModel.findById(req.query.id)
-// console.log(journey);
-// req.session.basket.push(journey)
-
-//   var user = await userModel.findById(req.session.user.id)
-//          .populate("journey") // permet de 
-//          .exec()
-
-//          console.log(user);
-
-
-
-
-
-
-// var journey = await journeyModel.findById(req.query.id)
-
-
-// var oldJourney = user.journey
-// oldJourney.push(journey)
-
-// await userModel.updateOne({_id : req.session.user.id},{journey : oldJourney}) // 1er objet est le filtre, le second remplace l'ancien journey par le nouveau
-
-
-
-  
-
-
-
 
   res.render ("mytickets", {basket : req.session.basket} )
 });
@@ -170,22 +142,37 @@ router.get("/error", function (req, res, next){
 
 router.get('/confirm', async function(req, res, next) {
 
+  console.log("basket");
+  console.log(req.session.basket);
+  console.log(req.session.basket.price); 
+
   var user = await userModel.findById(req.session.user.id)
           .populate("journey") 
           .exec()
   
   console.log("console log de user");
-  console.log(user);
-  console.log(req.session.basket._id);
-  var journey = await journeyModel.findById(req.session.basket._id)
-  
+  console.log(req.session.user.id);
+  console.log(Object.keys(req.session.basket))
+
+
+
+  console.log(typeof req.session.basket);
+
+  for(i=0;i<req.session.basket.length;i++){
+
+    var journey = await journeyModel.find({_id : req.session.basket[i].id});
+
   console.log("console log de journey");
-  console.log(journey);
+  console.log(journey); 
   
   var oldJourney = user.journey
    oldJourney.push(journey)
+
+   await userModel.updateOne({_id : req.session.user.id},{ journey : oldJourney})
+  }
+
   
-  await userModel.updateOne({_id : req.session.user.id},{journey : oldJourney}) // 1er objet est le filtre, le second remplace l'ancien journey par le nouveau
+   // 1er objet est le filtre, le second remplace l'ancien journey par le nouveau
   
   
 
