@@ -176,7 +176,7 @@ router.get('/confirm', async function(req, res, next) {
   
   console.log("console log de user");
   console.log(user);
-
+  console.log(req.session.basket._id);
   var journey = await journeyModel.findById(req.session.basket._id)
   
   console.log("console log de journey");
