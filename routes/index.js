@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
   if (req.session.basket===undefined){
     req.session.basket= [];
   }
-  res.render('login', { title: 'Express',basket: req.session.basket});
+  res.render('login', { title: 'Express', basket : req.session.basket });
 });
 
 module.exports = router;
@@ -74,14 +74,15 @@ router.post('/sign-in', async function (req, res, next){
 
 
 router.post('/search', async function(req, res, next) {
-var basket = await journeyModel.find({departure : req.body.departure, arrival : req.body.arrival, date : req.body.date});
+
+var basketCard = await journeyModel.find({departure : req.body.departure, arrival : req.body.arrival, date : req.body.date});
 
 
- if(basket !== null){
+ if(basketCard !== null){
 
   console.log("matched !");   
 
-   res.render("ticketcard",{ basket});
+   res.render("ticketcard",{ basketCard});
 
 
  } else {
@@ -92,16 +93,13 @@ var basket = await journeyModel.find({departure : req.body.departure, arrival : 
  });
 
  router.get("/basket", async function (req, res, next){ 
-
-
-  var journey = await journeyModel.findById(req.query.id)
-
- 
+  var journey= await journeyModel.findById(req.query.id);
+  
   let alreadyExist = false;
 
 
-  for (let i=0;i<req.session.basket.length;i++){
-      if(req.query.id === journey._id){
+  for (let i= 0;i<req.session.basket.length;i++){
+      if(req.query.id === req.session.basket[i].id){
         alreadyExist = true;
         
       }
@@ -120,6 +118,9 @@ var basket = await journeyModel.find({departure : req.body.departure, arrival : 
 
 } 
 
+
+
+  
 
   res.render ("mytickets", {basket : req.session.basket} )
 });
