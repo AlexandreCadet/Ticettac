@@ -14,10 +14,10 @@ const mongoose = require('mongoose');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  //if (req.session.user===undefined){
-   // req.session.user= [];
-  //}
-  res.render('login', { title: 'Express' });
+  if (req.session.basket===undefined){
+    req.session.basket= [];
+  }
+  res.render('login', { title: 'Express', basket : req.session.basket });
 });
 
 module.exports = router;
@@ -70,25 +70,16 @@ router.post('/sign-in', async function (req, res, next){
 
 });
 
-router.get('/mylasttrips', async function(req, res, next) {
-
-  var userId = await userModel.findById();
-
-
-  res.render('mylasttrips', userId);
-
-});
 
 router.post('/search', async function(req, res, next) {
+req.session.basket = await journeyModel.find({departure : req.body.departure, arrival : req.body.arrival, date : req.body.date});
 
- var journey = await journeyModel.find({departure : req.body.departure, arrival : req.body.arrival, date : req.body.date});
 
-
- if(journey !== null){
+ if(req.session.basket !== null){
 
   console.log("matched !");   
 
-   res.render("ticketcard",{ journey});
+   res.render("ticketcard",{ basket : req.session.basket});
 
 
  } else {
@@ -98,26 +89,52 @@ router.post('/search', async function(req, res, next) {
 
  });
 
- router.get("/add-journey", async function (req, res, next){ 
+ router.get("/basket", async function (req, res, next){ 
 
-  var user = await userModel.findById(req.session.user.id)
-         .populate("journey") // permet de 
-         .exec()
+  let alreadyExist = false;
+  
+  console.log(req.session.basket.length);
 
-         console.log(user);
+  for (let i=0;i<req.session.basket.length;i++){
+    if(req.query.id === req.session.basket[i]._id){
+      req.session.basket[i].quantity += 1;
+      alreadyExist == true
+    }
+    if(alreadyExist ==false){
+      req.session.basket.push({
+        arrival : req.query.arrival,
+        departure : req.query.departure,
+        departureTime : req.query.departureTime,
+        price : req.query.price,
+        id : req.query.id,
+        quantity : 1
+
+      })
+    }  }
+
+    
+// var journey = await journeyModel.findById(req.query.id)
+// console.log(journey);
+// req.session.basket.push(journey)
+
+//   var user = await userModel.findById(req.session.user.id)
+//          .populate("journey") // permet de 
+//          .exec()
+
+//          console.log(user);
 
 
 
 
 
 
-var journey = await journeyModel.findById(req.query.id)
+// var journey = await journeyModel.findById(req.query.id)
 
 
-var oldJourney = user.journey
-oldJourney.push(journey)
+// var oldJourney = user.journey
+// oldJourney.push(journey)
 
-await userModel.updateOne({_id : req.session.user.id},{journey : oldJourney}) // 1er objet est le filtre, le second remplace l'ancien journey par le nouveau
+// await userModel.updateOne({_id : req.session.user.id},{journey : oldJourney}) // 1er objet est le filtre, le second remplace l'ancien journey par le nouveau
 
 
 
@@ -126,16 +143,9 @@ await userModel.updateOne({_id : req.session.user.id},{journey : oldJourney}) //
 
 
 
-  res.render ("mytickets", {journey: user.journey} )
+  res.render ("mytickets", {basket : req.session.basket} )
 });
 
-
-//  var order = await ordersModel.findById(req.query.id)
-//  .populate('articles')
-//  .exec()
-
-// res.render('order', { order});
-// });
 
 
 
@@ -152,3 +162,12 @@ router.get("/error", function (req, res, next){
 
 
 
+
+router.get('/mylasttrips', async function(req, res, next) {
+
+  var userId = await userModel.findById();
+
+
+  res.render('mylasttrips', userId);
+
+});

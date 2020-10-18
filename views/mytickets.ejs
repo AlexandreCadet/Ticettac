@@ -30,14 +30,14 @@
                         <th scope="col">Price</th>
                       </tr>
                       <% 
-                      for (let i = 0; i < journey.length; i++) {
+                      for (let i = 0; i < basket.length; i++) {
                       %>
                       <tr  class="list borderless">
                         <th scope="row"><%= (i + 1) %></th>
-                        <td><%=journey[i].departure%> / <%=journey[i].arrival%> </td>
-                        <td><%=journey[i].date%></td>
-                        <td><%=journey[i].departureTime%></td>
-                        <td><%=journey[i].price%> €</td>
+                        <td><%=basket[i].departure%> / <%=basket[i].arrival%> </td>
+                        <td><%=basket[i].date%></td>
+                        <td><%=basket[i].departureTime%></td>
+                        <td><%=basket[i].price%> €</td>
                       </tr>
                       <% 
                       }
