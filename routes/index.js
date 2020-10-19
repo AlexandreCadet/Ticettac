@@ -130,16 +130,7 @@ var basketCard = await journeyModel.find({departure : req.body.departure, arriva
 
 
 
-
-
- //--------------ERROR-------------//
-
-router.get("/error", function (req, res, next){
-  res.render ("error")
-})
-
-
-
+//----------confirmer le voyage de l'utilisateur : push de son voyage dans userModel------------//
 
 router.get('/confirm', async function(req, res, next) {
 
@@ -171,3 +162,40 @@ router.get('/confirm', async function(req, res, next) {
 });
 
 
+
+router.get("/mylastTrip", async function (req,res,next){
+
+
+  var user = await userModel.findById(req.session.user.id)
+
+  .populate("journey")
+  .exec()
+    
+  console.log("j length", user.journey.length);
+  console.log("js", user.journey);
+
+
+  for(i=0;i<user.journey.length;i++){
+  
+    if(user.journey.length ===0){
+
+      res.redirect("/error")
+    } else {
+    
+    var userJourney = await journeyModel.findById(user.journey[i])
+
+
+      res.render("mylastTrip",{userJourney})
+
+  }
+}});
+    
+
+
+  
+
+ //--------------ERROR-------------//
+
+ router.get("/error", function (req, res, next){
+  res.render ("error")
+})
