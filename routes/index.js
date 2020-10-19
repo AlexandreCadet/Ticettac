@@ -136,59 +136,40 @@ router.get('/confirm', async function(req, res, next) {
 
 
   var user = await userModel.findById(req.session.user.id)
-          .populate("journey") 
-          .exec()
   
-
+  var oldJourney = user.journey
 
   for(i=0;i<req.session.basket.length;i++){
 
-    var journey = await journeyModel.find({_id : req.session.basket[i].id});
-
-  var oldJourney = user.journey
-   oldJourney.push(journey)
-
-   await userModel.updateOne({_id : req.session.user.id},{ journey : oldJourney})
+   oldJourney.push(req.session.basket[i].id)
   }
 
-  
+  await userModel.updateOne({_id : req.session.user.id},{ journey : oldJourney})
    // 1er objet est le filtre, le second remplace l'ancien journey par le nouveau
+   req.session.basket = []; // vide le panier
   
-  
-
-
   res.render('confirmation');
 
 });
+ 
 
-
+//------affichage du tableau journey de user--------------//
 
 router.get("/mylastTrip", async function (req,res,next){
 
 
-  var user = await userModel.findById(req.session.user.id)
+  var user = await userModel.findById(req.session.user.id).populate('journey').exec()
 
-  .populate("journey")
-  .exec()
-    
-  console.log("j length", user.journey.length);
-  console.log("js", user.journey);
-
-
-  for(i=0;i<user.journey.length;i++){
   
     if(user.journey.length ===0){
 
       res.redirect("/error")
     } else {
-    
-    var userJourney = await journeyModel.findById(user.journey[i])
 
-
-      res.render("mylastTrip",{userJourney})
+      res.render("mylastTrip",{userJourney:user.journey})
 
   }
-}});
+});
     
 
 
